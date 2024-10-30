@@ -133,3 +133,5 @@ void Update()
 ```
 
 En este caso, hemos definido un vector movement configurable en el editor, por si queremos cambiar la dirección de movimiento de la textura.
+
+![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/gifs/FDV_8_gif_5.gif)
