@@ -71,7 +71,8 @@ void Update()
 #### Tarea: Aplicar efecto parallax usando la técnica de scroll en la que se mueve continuamente la posición del fondo.
 
 Empezamos creando un array de GameObjects que llamamos LayersGameObject, donde haremos referencia a los fondos. Tenemos que ordenar de más lejano a más cercano en la lista, y tenemos que poner juntos el fondo y el de repuesto en posiciones pares, de esta forma:
-(screenshot)
+
+![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/screenshots/FDV_8_screenshot_1.png)
 
 En Update, hacemos un bucle para recorrer los GameObjects del array. Para cada uno, realizamos la misma operación que hicimos en la primera tarea. Dividimos la velocidad de desplazamiento por (1 + Mathf.Ceil(i/2)), para ir modificando la velocidad a la que se desplazan los fondos dos a dos.
 ```
