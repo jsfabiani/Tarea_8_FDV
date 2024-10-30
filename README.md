@@ -48,11 +48,24 @@ void Update()
 }
 ```
 
-![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/gifs/FDV_8_gif_1.gif)
+![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/gifs/FDV_8_gif_2.gif)
 
 
 #### Tarea: Aplicar un fondo a tu escena aplicando la técnica del desplazamiento de textura.
 
+Usamos el script BackgroundTextureOffset.
+
+Creamos una variable de rend, que asignamos al componente Renderer. Creamos un float para el offset, que ponemos a 0. En el Update, aumentamos el offset y actualizamos la textura. Tenemos que poner la textura con Wrap Repeat para que funcione.
+
+```
+void Update()
+{
+    offset += Time.deltaTime * scrollSpeed;
+    rend.material.SetTextureOffset("_MainTex", new Vector2 (offset, 0));
+}
+```
+
+![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/gifs/FDV_8_gif_3.gif)
 
 
 #### Tarea: Aplicar efecto parallax usando la técnica de scroll en la que se mueve continuamente la posición del fondo.
