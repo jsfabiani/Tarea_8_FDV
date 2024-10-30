@@ -2,7 +2,7 @@
 
 #### Tarea: Aplicar un fondo con scroll a tu escena utilizando una cámara fija, con dos fondos que se desplaza a la derecha.
 
-Usamos el script Background Scrolling Fixed Camera
+Usamos el script ![Background Scrolling Fixed Camera](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/scripts/BacgroundScrollingFixedCamera.cs).
 
 Recuperamos una referencia al collider2D, y creamos una variable con su tamaño.
 ```
@@ -34,7 +34,7 @@ void Update()
 
 #### Tarea: Aplicar un fondo con scroll a tu escena utilizando una cámara móvil y dos fondos estáticos, transladándolos cuando avance la cámara.
 
-Usamos el script BackgroundScrollingMovingCamera.
+Usamos el script ![BackgroundScrollingMovingCamera](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/scripts/BackgroundScrollingMovingCamera.cs).
 
 Igual que antes, creamos variables para el collider y el ancho. También creamos una referencia _camera al GameObject de la cámara. La operación es muy similar a la anterior, pero esta vez comparamos la posición del fondo con la de la cámara.
 
@@ -55,7 +55,7 @@ void Update()
 
 No podemos modificar el offset de los sprites directamente. En su lugar, hay que crear un quad y aplicarle el sprite como textura. Como shader, elegimos Unlit/Transparent, para que no haya problemas si tenemos sprites con partes transparentes.
 
-Usamos el script BackgroundTextureOffset.
+Usamos el script ![BackgroundTextureOffset](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/scripts/BackgroundTextureOffset.cs).
 
 Creamos una variable de rend, que asignamos al componente Renderer. Creamos un float para el offset, que ponemos a 0. En el Update, aumentamos el offset y actualizamos la textura. 
 
@@ -72,7 +72,7 @@ void Update()
 
 #### Tarea: Aplicar efecto parallax usando la técnica de scroll en la que se mueve continuamente la posición del fondo.
 
-Usamos el script ParallaxControllerMoving.
+Usamos el script ![ParallaxControllerMoving](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/scripts/ParallaxControllerMoving.cs), que agregamos a un GameObject vacío.
 
 Empezamos creando un array de GameObjects que llamamos LayersGameObject, donde haremos referencia a los fondos. Tenemos que ordenarlos de más cercano a más lejano en la lista, y tenemos que poner juntos dos a dos el primer fondo y el de repuesto, de esta forma:
 
@@ -101,7 +101,7 @@ void Update()
 
 #### Tarea: Aplicar efecto parallax actualizando el offset de la textura.
 
-Usamos el script ParallaxControl
+Usamos el script ![ParallaxControl](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/scripts/ParallaxControl.cs).
 
 Creamos un array con referencia a los GameObjects de los fondos. De él tenemos que sacar los materiales a un nuevo array Layers.
 
