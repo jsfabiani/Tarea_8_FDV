@@ -70,6 +70,8 @@ void Update()
 
 #### Tarea: Aplicar efecto parallax usando la técnica de scroll en la que se mueve continuamente la posición del fondo.
 
+Usamos el script ParallaxControllerMoving.
+
 Empezamos creando un array de GameObjects que llamamos LayersGameObject, donde haremos referencia a los fondos. Tenemos que ordenar de más lejano a más cercano en la lista, y tenemos que poner juntos el fondo y el de repuesto en posiciones pares, de esta forma:
 
 ![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/screenshots/FDV_8_screenshot_1.png)
@@ -96,3 +98,36 @@ void Update()
 
 
 #### Tarea: Aplicar efecto parallax actualizando el offset de la textura.
+
+Usamos el script ParallaxControl
+
+Creamos un array con referencia a los GameObjects de los fondos. De él tenemos que sacar los Renderers a un nuevo array Layers.
+
+```
+void Start()
+{
+    Layers = new Renderer[LayersGameObject.Length];
+    int i = 0;
+    foreach (GameObject obj in LayersGameObject)
+    {
+        Layers[i] = obj.GetComponent<Renderer>();
+        i++;
+    }
+}
+```
+
+Al igual que antes, creamos un bucle recorriendo este array, modificando la velocidad del offset para cada miembro del array.
+
+```
+void Update()
+{
+    int i = 0;
+    foreach (Renderer rend in Layers){
+        Material m = rend.material;
+        m.SetTextureOffset("_MainTex", m.GetTextureOffset("_MainTex") + speedOffset * movement / (i+1.0f)) ;
+        i++;
+    }         
+}
+```
+
+En este caso, hemos definido un vector movement configurable en el editor, por si queremos cambiar la dirección de movimiento de la textura.
