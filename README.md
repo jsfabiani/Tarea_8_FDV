@@ -53,9 +53,11 @@ void Update()
 
 #### Tarea: Aplicar un fondo a tu escena aplicando la técnica del desplazamiento de textura.
 
+No podemos modificar el offset de los sprites directamente. En su lugar, hay que crear un quad y aplicarle el sprite como textura. Como shader, elegimos Unlit/Transparent, para que no haya problemas si tenemos sprites con partes transparentes.
+
 Usamos el script BackgroundTextureOffset.
 
-Creamos una variable de rend, que asignamos al componente Renderer. Creamos un float para el offset, que ponemos a 0. En el Update, aumentamos el offset y actualizamos la textura. Tenemos que poner la textura con Wrap Repeat para que funcione.
+Creamos una variable de rend, que asignamos al componente Renderer. Creamos un float para el offset, que ponemos a 0. En el Update, aumentamos el offset y actualizamos la textura. 
 
 ```
 void Update()
@@ -72,7 +74,7 @@ void Update()
 
 Usamos el script ParallaxControllerMoving.
 
-Empezamos creando un array de GameObjects que llamamos LayersGameObject, donde haremos referencia a los fondos. Tenemos que ordenar de más lejano a más cercano en la lista, y tenemos que poner juntos el fondo y el de repuesto en posiciones pares, de esta forma:
+Empezamos creando un array de GameObjects que llamamos LayersGameObject, donde haremos referencia a los fondos. Tenemos que ordenarlos de más cercano a más lejano en la lista, y tenemos que poner juntos dos a dos el primer fondo y el de repuesto, de esta forma:
 
 ![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/screenshots/FDV_8_screenshot_1.png)
 
@@ -101,29 +103,29 @@ void Update()
 
 Usamos el script ParallaxControl
 
-Creamos un array con referencia a los GameObjects de los fondos. De él tenemos que sacar los Renderers a un nuevo array Layers.
+Creamos un array con referencia a los GameObjects de los fondos. De él tenemos que sacar los materiales a un nuevo array Layers.
 
 ```
 void Start()
 {
-    Layers = new Renderer[LayersGameObject.Length];
+    LayerMaterials = new Material[LayerGameObjects.Length];
     int i = 0;
-    foreach (GameObject obj in LayersGameObject)
+    foreach (GameObject obj in LayerGameObjects)
     {
-        Layers[i] = obj.GetComponent<Renderer>();
+        LayerMaterials[i] = obj.GetComponent<Renderer>().material;
         i++;
     }
 }
 ```
 
-Al igual que antes, creamos un bucle recorriendo este array, modificando la velocidad del offset para cada miembro del array.
+Al igual que antes, creamos un bucle recorriendo este array, modificando el offset según su posición en el array, con los más cercanos moviéndose más rápido..
 
 ```
 void Update()
 {
     int i = 0;
-    foreach (Renderer rend in Layers){
-        Material m = rend.material;
+    foreach (Material m in LayerMaterials)
+    {
         m.SetTextureOffset("_MainTex", m.GetTextureOffset("_MainTex") + speedOffset * movement / (i+1.0f)) ;
         i++;
     }         
