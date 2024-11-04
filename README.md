@@ -139,7 +139,7 @@ En este caso, hemos definido un vector movement configurable en el editor, por s
 
 #### Tarea: Pooling
 
-Creamos el script ObjectPooling para gestionar el pooling de objetos. Creamos la clase estática de ObjectPooling pool para poder acceder a ella en otros scripts. Después, tenemos variables para el GameObject del que queremos hacer pooling, el número de objetos que instanciaremos y una lista para guardar los objetos. En el Awake, asignamos pool a este script.
+Creamos el script ![ObjectPooling](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/scripts/ObjectPooling.cs) para gestionar el pooling de objetos. Creamos la clase estática de ObjectPooling pool para poder acceder a ella en otros scripts. Después, tenemos variables para el GameObject del que queremos hacer pooling, el número de objetos que instanciaremos y una lista para guardar los objetos. En el Awake, asignamos pool a este script.
 
 
 ```
@@ -204,7 +204,7 @@ public void DestroyPooledObject(GameObject obj)
 }
 ```
 
-Vamos a usar el script BossController para un enemigo que lanza misiles contra el jugador. Definimos el método Fire. Empieza intentando recuperar un objeto inactivo del pool; si lo consigue, empieza la animación de disparar, lo coloca en la posición del lanzamisiles y lo coloca como activo. Si no queda ningún objeto disponible, detiene la animación de disparar.
+Vamos a usar el script ![BossController](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/scripts/BossController.cs) para un enemigo que lanza misiles contra el jugador. Definimos el método Fire. Empieza intentando recuperar un objeto inactivo del pool; si lo consigue, empieza la animación de disparar, lo coloca en la posición del lanzamisiles y lo coloca como activo. Si no queda ningún objeto disponible, detiene la animación de disparar.
 
 ```
 void Fire()
@@ -234,7 +234,7 @@ void Start()
 }
 ```
 
-Los misiles los programamos en BulletController. Seguirán al jugador hasta que colisionen con algo. Definimos un int timesHit, el número de veces que un misil puede colisionar contra el jugador, por defecto 3. 
+Los misiles los programamos en ![BulletController](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/scripts/BulletController.cs). Seguirán al jugador hasta que colisionen con algo. Definimos un int timesHit, el número de veces que un misil puede colisionar contra el jugador, por defecto 3. 
 
 Cuando entre en colisión con otro objeto, si no es el jugador simplemente se desactiva y vuelve al pool. Si es el jugador, comprueba timesHit: si es mayor que 1, se desactiva y se resta 1 al contador; si es 0, llama al método DestroyPooledObject.
 
@@ -261,3 +261,6 @@ void OnCollisionEnter2D(Collision2D collision)
 ```
 
 ![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/gifs/FDV_8_gif_6.gif)
+
+
+#### Tarea: Revisa tu código de la entrega anterior e indica las mejoras que podrías hacer de cara al rendimiento.
