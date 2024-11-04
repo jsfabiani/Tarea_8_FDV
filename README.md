@@ -264,3 +264,66 @@ void OnCollisionEnter2D(Collision2D collision)
 
 
 #### Tarea: Revisa tu código de la entrega anterior e indica las mejoras que podrías hacer de cara al rendimiento.
+
+Podemos ver varias cosas que mejorar de las entregas anteriores:
+
+En el script para ![plataformas móviles](https://github.com/jsfabiani/Tarea_6_FDV/blob/main/scripts/MovingPlatform.cs), establecemos la dirección como una variable local en Update. Sería mejor definir dir como variable global, y actualizarla en Update. También en ese script, dejamos la función FixedUpdate aunque no esté haciendo nada.
+
+```
+void Update()
+{
+    ...
+
+    // Establish a direction pointing towards the stop location.
+    Vector2 dir = new Vector2(stopLocation.x - this.transform.position.x, stopLocation.y - this.transform.position.y);
+    this.transform.position = this.transform.position + new Vector3 (dir.normalized.x, dir.normalized.y, 0) * platformSpeed * Time.deltaTime;
+}
+
+void FixedUpdate()
+{
+
+}
+```
+
+En el script para el ![Player Controller](https://github.com/jsfabiani/Tarea_6_FDV/blob/main/scripts/PlayerController.cs) tenemos varios problemas. Por ejemplo, comparamos las Tags con strings directamente, en vez de usar CompareTag. También concatenamos strings, cuando sería mejor usar StringBuilder.
+
+```   
+if (trigger.gameObject.tag == "PowerUp")
+{
+    score += 50.0f;
+    scoreCounter.text = score + "$";
+    ...
+} 
+```
+
+En el ![controlador de cámara](https://github.com/jsfabiani/Tarea_7_FDV/blob/main/scripts/CameraController.cs), para la cámara lenta, actualizamos el contador en el Update. Sería mejor crear una corrutina para gestionarlo fuera del Update.
+
+```
+void Update()
+{
+    // Timer control for resetting gamespeed changes.
+    if (resetTime != 0.0f)
+    {
+        resetTimeCounter += Time.deltaTime;
+        if (resetTimeCounter >= resetTime)
+        {
+            GameSpeed(1.0f, 0.0f);
+        }
+    }
+...
+}
+```
+
+En esta misma tarea, en el ![controlador de parallax](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/scripts/ParallaxControl.cs), usamos un bucle foreach cuando un bucle for sería más eficiente.
+
+```
+void Update()
+{
+    int i = 0;
+    foreach (Material m in LayerMaterials)
+    {
+        m.SetTextureOffset("_MainTex", m.GetTextureOffset("_MainTex") + speedOffset * movement / (i+1.0f)) ;
+        i++;
+    }         
+}
+```
