@@ -135,3 +135,129 @@ void Update()
 En este caso, hemos definido un vector movement configurable en el editor, por si queremos cambiar la dirección de movimiento de la textura.
 
 ![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/gifs/FDV_8_gif_5.gif)
+
+
+#### Tarea: Pooling
+
+Creamos el script ObjectPooling para gestionar el pooling de objetos. Creamos la clase estática de ObjectPooling pool para poder acceder a ella en otros scripts. Después, tenemos variables para el GameObject del que queremos hacer pooling, el número de objetos que instanciaremos y una lista para guardar los objetos. En el Awake, asignamos pool a este script.
+
+
+```
+public static ObjectPooling pool;
+public GameObject objectToPool;
+public int amountToPool = 6;
+private List<GameObject> pooledObjects = new List<GameObject>();
+
+void Awake()
+{
+    if (pool == null)
+    {
+        pool = this;
+    }
+}
+```
+
+En el Start, instanciamos los objetos, los desactivamos y los añadimos a la lista.
+
+```
+void Start()
+{
+    for (int i = 0; i < amountToPool; i++)
+    {
+        GameObject obj = Instantiate(objectToPool);
+        obj.SetActive(false);
+        pooledObjects.Add(obj);
+    }
+}
+```
+
+Para acceder a los objetos del pool, usamos el método GetPooledObject, que nos devuelve el primer objeto del pool que esté inactivo, o nos devuelve null si todos los objetos están activos.
+
+```
+public GameObject GetPooledObject()
+{
+    for (int i = 0; i < pooledObjects.Count; i++)
+    {
+        if (!pooledObjects[i].activeInHierarchy)
+        {
+            return pooledObjects[i];
+        }
+    }
+
+    return null;
+}
+```
+
+Por último, creamos un método para destruir los objetos del pool y eliminarlos de la lista.
+
+```
+public void DestroyPooledObject(GameObject obj)
+{
+    for (int i = 0; i < pooledObjects.Count; i++)
+    {
+        if (obj == pooledObjects[i])
+        {
+            pooledObjects.RemoveAt(i);
+            Destroy(obj);
+        }
+    }
+}
+```
+
+Vamos a usar el script BossController para un enemigo que lanza misiles contra el jugador. Definimos el método Fire. Empieza intentando recuperar un objeto inactivo del pool; si lo consigue, empieza la animación de disparar, lo coloca en la posición del lanzamisiles y lo coloca como activo. Si no queda ningún objeto disponible, detiene la animación de disparar.
+
+```
+void Fire()
+{
+    missile = ObjectPooling.pool.GetPooledObject();
+    if (missile != null)
+    {
+        animator.SetBool("isFiring", true);
+        missile.transform.position = new Vector3 (transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        missile.SetActive(true);
+    }
+    else
+    {
+        animator.SetBool("isFiring", false);
+    }
+}
+```
+
+Usamos InvokeRepeating en el Start. Después de 1 segundo, disparará misiles cada 0.2 segundos hasta que se quede sin objetos en el pool.
+
+```
+void Start()
+{
+    ...
+
+    InvokeRepeating("Fire", 1.0f, 0.2f);
+}
+```
+
+Los misiles los programamos en BulletController. Seguirán al jugador hasta que colisionen con algo. Definimos un int timesHit, el número de veces que un misil puede colisionar contra el jugador, por defecto 3. 
+
+Cuando entre en colisión con otro objeto, si no es el jugador simplemente se desactiva y vuelve al pool. Si es el jugador, comprueba timesHit: si es mayor que 1, se desactiva y se resta 1 al contador; si es 0, llama al método DestroyPooledObject.
+
+```
+void OnCollisionEnter2D(Collision2D collision)
+{
+    if (collision.gameObject.tag == "PlayerCharacter")
+    {
+        if (timesHit > 1)
+        {
+            gameObject.SetActive(false);
+            timesHit -= 1;
+        }
+        else
+        {
+            ObjectPooling.pool.DestroyPooledObject(gameObject);
+        }
+    }
+    else
+    {
+    gameObject.SetActive(false);
+    }
+}
+```
+
+![](https://github.com/jsfabiani/Tarea_8_FDV/blob/main/gifs/FDV_8_gif_6.gif)
